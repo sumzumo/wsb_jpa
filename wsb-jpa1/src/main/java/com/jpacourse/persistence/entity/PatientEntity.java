@@ -36,8 +36,11 @@ public class PatientEntity {
 	private AddressEntity address;
 
 	// two-sided
-	@OneToMany(mappedBy = "patient", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "patient", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
 	private Collection<VisitEntity> visits;
+
+	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private Boolean isFirstTime;
 
 	public Long getId() {
 		return id;
@@ -107,6 +110,18 @@ public class PatientEntity {
 		return visits;
 	}
 
+	public Boolean getIsFirstTime() {
+		return isFirstTime;
+	}
+
+	public void setIsFirstTime(Boolean isFirstTime) {
+		this.isFirstTime = isFirstTime;
+	}
+
+	public void setVisits(Collection<VisitEntity> visits) {
+		this.visits = visits;
+	}
+
 	public void addVisit(VisitEntity visit) {
 		visits.add(visit);
 
@@ -118,4 +133,5 @@ public class PatientEntity {
 
 		visit.setPatient(null);
 	}
+
 }

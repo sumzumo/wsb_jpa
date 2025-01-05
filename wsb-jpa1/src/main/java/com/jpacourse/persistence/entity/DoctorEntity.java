@@ -108,6 +108,10 @@ public class DoctorEntity {
 
 	public Collection<VisitEntity> getVisits() {return visits;}
 
+	public void setVisits(Collection<VisitEntity> visits) {
+		this.visits = visits;
+	}
+
 	public void addVisit(VisitEntity visit) {
 		visits.add(visit);
 
