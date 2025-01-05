@@ -36,7 +36,7 @@ public class PatientEntity {
 	private AddressEntity address;
 
 	// two-sided
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "patient", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
 	private Collection<VisitEntity> visits;
 
 	public Long getId() {
