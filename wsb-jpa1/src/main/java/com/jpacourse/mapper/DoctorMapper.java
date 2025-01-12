@@ -1,9 +1,12 @@
 package com.jpacourse.mapper;
 import com.jpacourse.dto.DoctorTO;
 import com.jpacourse.persistence.entity.DoctorEntity;
-import java.util.stream.Collectors;
+
 public final class DoctorMapper
 {
+    private DoctorMapper() {
+    }
+
     public static DoctorTO mapToTO(final DoctorEntity doctorEntity)
     {
         if (doctorEntity == null) {

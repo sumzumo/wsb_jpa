@@ -18,7 +18,7 @@ public class PatientServiceImpl implements PatientService
     private final PatientDao patientDao;
     @Autowired
     public PatientServiceImpl(PatientDao pPatientDao) {
-        patientDao = pPatientDao;
+        this.patientDao = pPatientDao;
     }
     @Override
     @Transactional
@@ -29,18 +29,25 @@ public class PatientServiceImpl implements PatientService
     @Transactional(readOnly = true)
     public PatientTO getPatientById(Long patientId) {
         PatientEntity patientEntity = this.patientDao.findPatientById(patientId);
-        return PatientMapper.mapToTO(patientEntity);
+        return mapToPatientTO(patientEntity);
     }
     @Override
     @Transactional
     public PatientTO saveOrUpdatePatient(PatientTO patientTO) {
         PatientEntity patientEntity = PatientMapper.mapToEntity(patientTO);
         PatientEntity savedEntity = this.patientDao.saveOrUpdate(patientEntity);
-        return PatientMapper.mapToTO(savedEntity);
+        return mapToPatientTO(savedEntity);
     }
     @Override
     @Transactional
     public void addVisit(Long patientId, Long doctorId, String description, LocalDateTime time) {
         this.patientDao.addVisitToPatient(patientId, doctorId, description, time);
     }
+    private PatientTO mapToPatientTO(PatientEntity patientEntity) {
+        return PatientMapper.mapToTO(patientEntity);
+    }
+    private PatientEntity mapToPatientEntity(PatientTO patientTO) {
+        return PatientMapper.mapToEntity(patientTO);
+    }
+
 }

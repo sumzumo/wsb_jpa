@@ -12,6 +12,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -39,4 +44,65 @@ public class PatientDaoTest {
         assertThat(result.getDescription()).isEqualTo("randompitupitublabla");
         assertThat(result.getTime()).isEqualTo(visitDate);
     }
+    @Test
+    public void testFindPatientsByLastName() {
+        // given
+        String lastName = "Blabla"; // Adjusted to match your dataset
+        // when
+        Collection<PatientEntity> result = patientDao.findPatientsByLastName(lastName);
+        List<PatientEntity> listOfResults = new ArrayList<>(result);
+        // then
+        assertNotNull(listOfResults);
+        assertFalse(listOfResults.isEmpty());
+        assertEquals(1, listOfResults.size());
+        PatientEntity patient = listOfResults.get(0);
+        assertEquals(lastName, patient.getLastName());
+        assertEquals("Ania", patient.getFirstName());
+        assertEquals("PAT001", patient.getPatientNumber());
+        assertEquals("1985-10-10", patient.getDateOfBirth().toString());
+        assertEquals("whoknows@gmail.com", patient.getEmail());
+    }
+
+    @Test
+    public void testFindPatientsWithVisitsCountGreaterThanOne() {
+        // given
+        int visitsCount = 0; // Adjusted since each patient has only one visit in your dataset
+        // when
+        Collection<PatientEntity> result = patientDao.findPatientsWithVisitsCountGreaterThan(visitsCount);
+        List<PatientEntity> listOfResults = new ArrayList<>(result);
+        // then
+        assertNotNull(listOfResults);
+        assertFalse(listOfResults.isEmpty());
+        assertEquals(2, listOfResults.size()); // Both patients have at least one visit
+        PatientEntity patient1 = listOfResults.get(0);
+        PatientEntity patient2 = listOfResults.get(1);
+
+        assertNotNull(patient1);
+        assertNotNull(patient2);
+
+        // Validate first patient
+        assertEquals("Ania", patient1.getFirstName());
+        assertEquals("Blabla", patient1.getLastName());
+        assertEquals("PAT001", patient1.getPatientNumber());
+        assertEquals("1985-10-10", patient1.getDateOfBirth().toString());
+
+        // Validate second patient
+        assertEquals("Justyna", patient2.getFirstName());
+        assertEquals("Yapyap", patient2.getLastName());
+        assertEquals("PAT002", patient2.getPatientNumber());
+        assertEquals("1990-05-15", patient2.getDateOfBirth().toString());
+    }
+
+    @Test
+    public void testFindPatientsWithFirstTime() {
+        // given
+        Boolean isFirstTime = null;
+        // when
+        Collection<PatientEntity> result = patientDao.findPatientsByFirstTimeStatus(isFirstTime);
+        List<PatientEntity> listOfResults = new ArrayList<>(result);
+        // then
+        assertNotNull(listOfResults);
+        assertTrue(listOfResults.isEmpty());
+    }
+
 }

@@ -14,12 +14,15 @@ public class DoctorServiceImpl implements DoctorService
     private final DoctorDao doctorDao;
     @Autowired
     public DoctorServiceImpl(DoctorDao pDoctorDao){
-        doctorDao = pDoctorDao;
+        this.doctorDao = pDoctorDao;
     }
     @Override
     public DoctorTO findById(Long id)
     {
         final DoctorEntity entity = doctorDao.findOne(id);
         return DoctorMapper.mapToTO(entity);
+    }
+    private DoctorTO mapToDoctorTO(DoctorEntity doctorEntity) {
+        return DoctorMapper.mapToTO(doctorEntity);
     }
 }
